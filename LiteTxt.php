@@ -22,11 +22,6 @@
  */
 
 class LiteTxt {
-    /**
-     * Path to the JSON log file for errors.
-     * Example: CITOMNI_SYSTEM_PATH . '/logs/litetxt_errors.json'
-     */
-    private const LOG_FILE = CITOMNI_SYSTEM_PATH . '/logs/litetxt_errors.json';
 
     /**
      * Cache for loaded text files to prevent redundant file reads.
@@ -41,41 +36,65 @@ class LiteTxt {
      * 
      * @return array The cached text files and their contents.
      */
-    public static function getCache(): array {
-        return self::$cache;
-    }
+    // public static function getCache(): array {
+        // return self::$cache;
+    // }
+	
+    /**
+     * Tracks how many times files are actually loaded.
+     *
+     * @var array<string, int> $loadCounter
+     */
+    // private static array $loadCounter = [];
+	
+    /**
+     * Debug function: Returns the file load count.
+     * 
+     * @return array<string, int> Number of times each file has been loaded.
+     */
+    // public static function getLoadCounts(): array {
+        // return self::$loadCounter;
+    // }
 
     /**
-     * Retrieves a static text value from a language file.
-     * If the file has not been loaded yet, it will be included and cached.
+     * Retrieves a text value from a language file.
      * 
-     * @param string $basePath The base directory where text files are stored.
-     * @param string $file The name of the text file (without ".php" extension).
-     * @param string $key The specific key to retrieve from the file.
-     * @param string $default The default value if the key is not found.
-     * @return string The retrieved text value or the default value.
+     * If the file is not yet loaded, it will be included and cached to avoid redundant disk reads.
+     * If the file does not exist or does not return a valid array, an optional warning will be logged.
+     * 
+     * @param string $basePath  	The base directory where language files are stored.
+     * @param string $file      	The name of the text file (without ".php" extension).
+     * @param string $key       	The specific key to retrieve from the file.
+     * @param string $default   	The default value to return if the key is not found.
+     * @param string|null $logFile	Path to the log file for warnings. If null, logging is disabled.
+     * 
+     * @return string 			The retrieved text value or the default value if the key is missing.
      */
-    public static function get(string $basePath, string $file, string $key, string $default = ''): string {
+    public static function get(string $basePath, string $file, string $key, string $default = '', ?string $logFile = null): string {
         // Construct the full file path
         $filePath = (substr($basePath, -1) === '/' ? $basePath : $basePath . '/') . "$file.php";
 
         // Check if the file is already cached to avoid redundant file reads
         if (!isset(self::$cache[$filePath])) {
 			
-			// Include the file only if it exists; otherwise, set $data to null
+            // Count how many times each file is loaded
+            // self::$loadCounter[$filePath] = (self::$loadCounter[$filePath] ?? 0) + 1;
+			
+            // Include the file only if it exists; otherwise, set $data to null
             $data = is_file($filePath) ? include $filePath : null;
 
             // Ensure only valid arrays are cached
             self::$cache[$filePath] = is_array($data) ? $data : [];
 
             // Check if $data is an array
-			if (!is_array($data)) {
-                // Log an error if the file is missing or invalid
+			// Only log if $logFile is provided, preventing unnecessary logging when disabled
+			if (!is_array($data) && $logFile !== null) {
+                // Log an error if the file is missing or invalid. 
                 error_log(json_encode([
                     'timestamp' => date('Y-m-d H:i:s'),
                     'level' => 'WARNING',
                     'message' => "LiteTxt Warning: '$filePath' does not return a valid PHP array."
-                ]) . PHP_EOL, 3, self::LOG_FILE);
+                ]) . PHP_EOL, 3, $logFile);
             }
         }
 
