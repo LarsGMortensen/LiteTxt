@@ -17,7 +17,7 @@ Just **download** `LiteTxt.php` and include it in your project:
 require_once 'LiteTxt.php';
 ```
 
-## 🔧 Usage
+## Usage
 ### **1️⃣ Set up your text files**
 LiteTxt loads text files stored in PHP arrays. Create files like `/app/txts/en/public.php`:
 ```php
@@ -47,13 +47,13 @@ $langPath = __DIR__ . '/app/txts/da/';
 echo LiteTxt::get($langPath, 'public', 'welcome'); // Outputs: "Velkommen til LiteTxt!"
 ```
 
-## 🛠 Configuration
+## 🔧 Configuration
 LiteTxt logs errors in JSON format. You can define a custom log path by modifying the constant inside `LiteTxt.php`:
 ```php
 private const LOG_FILE = '/path/to/logs/litetxt_errors.json';
 ```
 
-## 🛠 Error Logging
+## Error logging
 If a text file is missing or invalid, LiteTxt logs a warning in a JSON-formatted error log:
 - **Log file:** `SYSTEM_PATH . '/logs/litetxt_errors.json'`
 - **Example log entry:**
@@ -65,25 +65,22 @@ If a text file is missing or invalid, LiteTxt logs a warning in a JSON-formatted
 }
 ```
 
-## 📊 Benchmark: Caching Performance
-A test was conducted with **10,000,000 cached requests** after an initial file load.
+## 💡 Why LiteTxt?
 
-| **Metric** | **Result** |
-|------------|-----------|
-| **First Load** | `0.000000 sec` (PHP's precision limit) |
-| **Total Cached Loads (10M ops)** | `4.405006 sec` |
-| **Avg Cached Load Time** | `0.000000441 sec` (0.441 microseconds) |
+LiteTxt is designed for **blazing-fast static text management** with caching and multi-language support.  
+It ensures **minimal disk access**, fast lookups, and **zero dependencies**, making it ideal for high-performance PHP applications.  
+Whether you're managing UI text, translations, or content snippets, LiteTxt provides a **simple yet powerful API** with instant retrieval.
 
-This confirms that **LiteTxt’s caching mechanism is incredibly fast**, ensuring text retrieval with minimal overhead.
+## License
+LiteTxt is released under the **GNU General Public License v3.0**. See [LICENSE](LICENSE) for details.
 
-## 📜 License
-LiteTxt is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
-See the [LICENSE](LICENSE) file for details.
+## Contributing
+Contributions are welcome! Feel free to fork this repository, submit issues, or open a pull request.
+
+## Author
+Developed by **Lars Grove Mortensen** © 2025. Feel free to reach out or contribute!
 
 ---
 
-### 🎯 Why LiteTxt?
-💡 **No bloated frameworks. No unnecessary complexity. Just fast, efficient text management.**
-
-🚀 **Try it out and let me know how it works for you!** 😃
+🌟 **If you find this library useful, give it a star on GitHub!** 🌟
 
