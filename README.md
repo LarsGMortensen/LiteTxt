@@ -3,13 +3,13 @@
 LiteTxt is a **minimalist, high-performance PHP class** for managing static text files with **caching** and **multi-language support**. It is designed to be **fast, efficient, and easy to use**, with no unnecessary overhead.
 
 ## 🚀 Features
-- ✅ **Ultra-Fast Performance** – Loads text files only once per request, reducing disk access.
-- ✅ **Fast file caching** – Loads text files only once per request. Retrieves cached text in under half a microsecond per request.
+- ✅ **Ultra-Fast Performance** – Loads each text file only once per request.
+- ✅ **Fast file caching** – Retrieves cached text in under half a microsecond.
 - ✅ **Minimal Overhead** – Single-file implementation with zero external dependencies.
-- ✅ **Supports multiple languages** – Easily switch between language directories.
-- ✅ **Simple API** – Just call `LiteTxt::get()` with your file and key.
-- ✅ **JSON-based error logging** – Detects and logs invalid or missing text files for easy debugging.
-- ✅ **Compatible with PHP 7.4+** – Works seamlessly with **PHP 7.4+** and modern frameworks.
+- ✅ **Multi-language support** – Organize language files by directory structure.
+- ✅ **Simple API** – Just call `LiteTxt::get()` with a full file path and a key.
+- ✅ **JSON-based error logging** – Detects and logs missing/invalid text files or keys.
+- ✅ **PHP 7.4+ compatible** – Lightweight and future-proof.
 
 ## 📥 Installation
 Just **download** `LiteTxt.php` and include it in your project:
@@ -30,21 +30,22 @@ return [
 
 ### **2️⃣ Retrieve a text string**
 ```php
-$langPath = __DIR__ . '/app/txts/en/';
-echo LiteTxt::get($langPath, 'public', 'welcome'); // Outputs: "Welcome to LiteTxt!"
+$filePath = __DIR__ . '/app/lang/en/public.php';
+echo LiteTxt::get($filePath, 'welcome'); // Outputs: "Welcome to LiteTxt!"
 ```
 
 ### **3️⃣ Handle missing keys/files**
 If the key or file is missing, LiteTxt returns a default value:
 ```php
-echo LiteTxt::get($langPath, 'public', 'missing_key', 'Default value');
+echo LiteTxt::get($filePath, 'missing_key', 'Default value');
 ```
 
 ### **4️⃣ Use multiple language directories**
-Switch between languages dynamically by changing the path:
+Switch between languages dynamically:
 ```php
-$langPath = __DIR__ . '/app/txts/da/';
-echo LiteTxt::get($langPath, 'public', 'welcome'); // Outputs: "Velkommen til LiteTxt!"
+$lang = 'da';
+$filePath = __DIR__ . "/app/lang/$lang/public.php";
+echo LiteTxt::get($filePath, 'welcome'); // Outputs: "Velkommen til LiteTxt!"
 ```
 
 ## 🔧 Configuration
@@ -54,12 +55,13 @@ private const LOG_FILE = '/path/to/logs/litetxt_errors.json';
 ```
 
 ## Error logging
-If a text file is missing or invalid, LiteTxt logs a warning in a JSON-formatted error log:
-- **Log file:** `SYSTEM_PATH . '/logs/litetxt_errors.json'`
+If a text file is missing or invalid, LiteTxt logs a JSON-formatted warning.
+
+- **Log file:** configurable via parameter to `LiteTxt::get()`
 - **Example log entry:**
 ```json
 {
-    "timestamp": "2025-01-23 02:00:00",
+    "timestamp": "2025-01-23 02:41:37",
     "level": "WARNING",
     "message": "LiteTxt Warning: '/path/to/missing_file.php' does not return a valid PHP array."
 }
