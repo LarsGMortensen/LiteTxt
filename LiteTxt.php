@@ -57,22 +57,19 @@ class LiteTxt {
 	// }
 
 	/**
-	 * Retrieves a text value from a language file.
+	 * Retrieves a static text value from a specific language file.
 	 * 
-	 * If the file is not yet loaded, it will be included and cached to avoid redundant disk reads.
+	 * If the file has not yet been loaded, it will be included and cached to avoid redundant disk reads.
 	 * If the file does not exist or does not return a valid array, an optional warning will be logged.
 	 * 
-	 * @param string $basePath  	The base directory where language files are stored.
-	 * @param string $file      	The name of the text file (without ".php" extension).
-	 * @param string $key       	The specific key to retrieve from the file.
-	 * @param string $default   	The default value to return if the key is not found.
-	 * @param string|null $logFile	Path to the log file for warnings. If null, logging is disabled.
+	 * @param string $filePath  	The full path to the PHP language file (including ".php" extension).
+	 * @param string $key       	The specific key to retrieve from the loaded file array.
+	 * @param string $default   	Optional fallback text to return if the key is not found.
+	 * @param string|null $logFile	Optional path to a log file for warnings. If null, logging is disabled.
 	 * 
-	 * @return string 				The retrieved text value or the default value if the key is missing.
+	 * @return string 				The resolved text string, or the fallback default if the key is missing.
 	 */
-	public static function get(string $basePath, string $file, string $key, string $default = '', ?string $logFile = null): string {
-		// Construct the full file path
-		$filePath = (substr($basePath, -1) === '/' ? $basePath : $basePath . '/') . "$file.php";
+	public static function get(string $filePath, string $key, string $default = '', ?string $logFile = null): string {
 
 		// Check if the file is already cached to avoid redundant file reads
 		if (!isset(self::$cache[$filePath])) {
