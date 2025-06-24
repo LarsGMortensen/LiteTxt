@@ -21,6 +21,10 @@
  * along with LiteTxt. If not, see <https://www.gnu.org/licenses/>.
  */
 
+
+namespace LiteTxt;
+
+
 class LiteTxt {
 
 	/**
