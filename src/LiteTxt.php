@@ -78,32 +78,39 @@ class LiteTxt {
 		// Check if the file is already cached to avoid redundant file reads
 		if (!isset(self::$cache[$filePath])) {
 
-			// Count how many times each file is loaded
+			// Count how many times each file is loaded (can be used as optional debug counter)
 			// self::$loadCounter[$filePath] = (self::$loadCounter[$filePath] ?? 0) + 1;
 
 			// Include the file only if it exists; otherwise, set $data to null
 			$data = is_file($filePath) ? include $filePath : null;
 
-			// Ensure only valid arrays are cached
+			// Cache only valid arrays, otherwise cache as empty array
 			self::$cache[$filePath] = is_array($data) ? $data : [];
 
 			// Check if $data is an array
 			// Only log if $logFile is provided, preventing unnecessary logging when disabled
 			if (!is_array($data) && $logFile !== null) {
+				// Capture URI for debugging (CLI fallback if not web request)
+				$uri = $_SERVER['REQUEST_URI'] ?? 'CLI/unknown';
 				// Log an error if the file is missing or invalid. 
 				error_log(json_encode([
 					'timestamp' => date('Y-m-d H:i:s'),
-					'level' => 'WARNING',
+					'level' => 'ERROR',
+					'uri' => $uri,
 					'message' => "LiteTxt Warning: '$filePath' does not return a valid PHP array."
 				]) . PHP_EOL, 3, $logFile);
 			}
 		}
 
-		// Check if the requested text exists and is not empty
+		// If requested key is missing/empty, log warning (if logging enabled)
 		if ((!isset(self::$cache[$filePath][$key]) || self::$cache[$filePath][$key] === null || self::$cache[$filePath][$key] === '') && $logFile !== null) {
+			// Capture URI for debugging (CLI fallback if not web request)
+			$uri = $_SERVER['REQUEST_URI'] ?? 'CLI/unknown';
+			// Append structured warning log entry
 			error_log(json_encode([
 				'timestamp' => date('Y-m-d H:i:s'),
 				'level' => 'WARNING',
+				'uri' => $uri,
 				'message' => "LiteTxt Warning: Key '$key' is missing or empty in file '$filePath'."
 			]) . PHP_EOL, 3, $logFile);
 		}
