@@ -1,18 +1,56 @@
 {
-  "name": "larsgmortensen/litetxt",
-  "description": "Lightweight Static Text Manager for PHP",
-  "type": "library",
-  "license": "GPL-3.0-or-later",
-  "autoload": {
-    "psr-4": {
-      "LiteTxt\\": "src/"
-    }
-  },
-  "authors": [
-    {
-      "name": "Lars Grove Mortensen",
-      "homepage": "https://github.com/LarsGMortensen"
-    }
-  ],
-  "require": {}
+	"name": "larsgmortensen/litetxt",
+	"description": "Lightweight static text manager for PHP with in-memory caching, file-based storage, and optional logging.",
+	"type": "library",
+	"license": "GPL-3.0-or-later",
+	"homepage": "https://github.com/LarsGMortensen/LiteTxt",
+	"keywords": [
+		"php",
+		"text",
+		"i18n",
+		"translations",
+		"localization",
+		"static-text",
+		"caching",
+		"lightweight"
+	],
+	"require": {
+		"php": ">=7.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"LiteTxt\\": "src/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Lars Grove Mortensen",
+			"homepage": "https://github.com/LarsGMortensen"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/LarsGMortensen/LiteTxt/issues",
+		"source": "https://github.com/LarsGMortensen/LiteTxt"
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"sort-packages": true
+	},
+	"minimum-stability": "stable",
+	"prefer-stable": true,
+	"archive": {
+		"exclude": [
+			"/.github",
+			"/backups",
+			"/tests",
+			"/benchmarks",
+			"/examples",
+			"/docs",
+			"/.editorconfig",
+			"/.gitattributes",
+			"/.gitignore",
+			"/Makefile",
+			"/vendor"
+		]
+	}
 }
