@@ -1,30 +1,13 @@
 <?php
-/**
- * LiteTxt - Lightweight static text manager for PHP
- * 
- * Copyright (C) 2025 Lars Grove Mortensen. All rights reserved.
- * 
- * LiteTxt is a single-file PHP utility class for efficiently loading,
- * caching, and retrieving static text entries from PHP array files.
- * It is designed for applications that require lightweight i18n or
- * centralized text management without the overhead of full-scale
- * translation frameworks.
- * 
- * LiteTxt is free software: You can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * LiteTxt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with LiteTxt. If not, see <https://www.gnu.org/licenses/>.
- */
-
 declare(strict_types=1);
+/*
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) 2023-2025 Lars Grove Mortensen
+ *
+ * LiteTxt - A Lightweight & High-Performance Static Text Manager for PHP
+ * Source:  https://github.com/larsgmortensen/litetxt
+ * License: See the LICENSE file for full terms.
+ */
 
 namespace LiteTxt;
 
@@ -124,10 +107,10 @@ final class LiteTxt {
 			// Only include if the file exists; otherwise mark as invalid.
 			$data = is_file($filePath) ? include $filePath : null;
 
-			// Cache the valid array (or an empty array on invalid file) — avoids re-including bad files per request.
+			// Cache the valid array (or an empty array on invalid file) - avoids re-including bad files per request.
 			self::$cache[$filePath] = is_array($data) ? $data : [];
 
-			// File didn’t return an array -> log ERROR (but only if $logFile is set).
+			// File didn't return an array -> log ERROR (but only if $logFile is set).
 			if (!is_array($data) && $logFile !== null) {
 
 				// Capture the current request URI for log context.
